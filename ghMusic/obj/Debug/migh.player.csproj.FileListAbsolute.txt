@@ -1,0 +1,12 @@
+C:\ghMusic\ghMusic\obj\Debug\migh.player.csprojResolveAssemblyReference.cache
+C:\ghMusic\ghMusic\obj\Debug\Interop.WMPLib.dll
+C:\ghMusic\ghMusic\obj\Debug\AxInterop.WMPLib.dll
+C:\ghMusic\ghMusic\obj\Debug\migh.player.csproj.ResolveComReference.cache
+C:\ghMusic\ghMusic\obj\Debug\migh.player.frmDownload.resources
+C:\ghMusic\ghMusic\obj\Debug\migh.player.frmLogin.resources
+C:\ghMusic\ghMusic\obj\Debug\migh.player.frmSettings.resources
+C:\ghMusic\ghMusic\obj\Debug\migh.player.frmSongStatus.resources
+C:\ghMusic\ghMusic\obj\Debug\migh.player.frmPlayer.resources
+C:\ghMusic\ghMusic\obj\Debug\migh.player.frmSongURL.resources
+C:\ghMusic\ghMusic\obj\Debug\migh.player.Properties.Resources.resources
+C:\ghMusic\ghMusic\obj\Debug\migh.player.csproj.GenerateResource.Cache

@@ -1,0 +1,89 @@
+c:\users\-casa\documents\visual studio 2012\Projects\ghMusic\ghMusic\bin\Debug\ghMusic.exe.config
+c:\users\-casa\documents\visual studio 2012\Projects\ghMusic\ghMusic\obj\Debug\ghMusic.csprojResolveAssemblyReference.cache
+c:\users\-casa\documents\visual studio 2012\Projects\ghMusic\ghMusic\obj\Debug\ghMusic.Main_frm.resources
+c:\users\-casa\documents\visual studio 2012\Projects\ghMusic\ghMusic\obj\Debug\ghMusic.Properties.Resources.resources
+c:\users\-casa\documents\visual studio 2012\Projects\ghMusic\ghMusic\obj\Debug\ghMusic.csproj.GenerateResource.Cache
+c:\users\-casa\documents\visual studio 2012\Projects\ghMusic\ghMusic\bin\Debug\ghMusicClient.exe.config
+c:\users\-casa\documents\visual studio 2012\Projects\ghMusic\ghMusic\obj\Debug\ghMusicClient.Properties.Resources.resources
+C:\Users\Edu\Documents\Visual Studio 2012\Projects\ghMusic\ghMusic\bin\Debug\ghMusicClient.exe.config
+C:\Users\Edu\Documents\Visual Studio 2012\Projects\ghMusic\ghMusic\bin\Debug\ghMusicClient.exe
+C:\Users\Edu\Documents\Visual Studio 2012\Projects\ghMusic\ghMusic\bin\Debug\ghMusicClient.pdb
+C:\Users\Edu\Documents\Visual Studio 2012\Projects\ghMusic\ghMusic\bin\Debug\ghMusicAPI.dll
+C:\Users\Edu\Documents\Visual Studio 2012\Projects\ghMusic\ghMusic\bin\Debug\JsonTools.dll
+C:\Users\Edu\Documents\Visual Studio 2012\Projects\ghMusic\ghMusic\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Edu\Documents\Visual Studio 2012\Projects\ghMusic\ghMusic\bin\Debug\ghMusicAPI.pdb
+C:\Users\Edu\Documents\Visual Studio 2012\Projects\ghMusic\ghMusic\bin\Debug\Interop.WMPLib.dll
+C:\Users\Edu\Documents\Visual Studio 2012\Projects\ghMusic\ghMusic\bin\Debug\AxInterop.WMPLib.dll
+C:\Users\Edu\Documents\Visual Studio 2012\Projects\ghMusic\ghMusic\obj\Debug\ghMusic.csprojResolveAssemblyReference.cache
+C:\Users\Edu\Documents\Visual Studio 2012\Projects\ghMusic\ghMusic\obj\Debug\Interop.WMPLib.dll
+C:\Users\Edu\Documents\Visual Studio 2012\Projects\ghMusic\ghMusic\obj\Debug\AxInterop.WMPLib.dll
+C:\Users\Edu\Documents\Visual Studio 2012\Projects\ghMusic\ghMusic\obj\Debug\ghMusic.csproj.ResolveComReference.cache
+C:\Users\Edu\Documents\Visual Studio 2012\Projects\ghMusic\ghMusic\obj\Debug\ghMusicClient.Main_frm.resources
+C:\Users\Edu\Documents\Visual Studio 2012\Projects\ghMusic\ghMusic\obj\Debug\ghMusicClient.Properties.Resources.resources
+C:\Users\Edu\Documents\Visual Studio 2012\Projects\ghMusic\ghMusic\obj\Debug\ghMusic.csproj.GenerateResource.Cache
+C:\Users\Edu\Documents\Visual Studio 2012\Projects\ghMusic\ghMusic\obj\Debug\ghMusicClient.exe
+C:\Users\Edu\Documents\Visual Studio 2012\Projects\ghMusic\ghMusic\obj\Debug\ghMusicClient.pdb
+C:\Users\Eduardo\Documents\Visual Studio 2013\Projects\ghMusic\ghMusic\bin\Debug\ghMusicClient.exe.config
+C:\Users\Eduardo\Documents\Visual Studio 2013\Projects\ghMusic\ghMusic\bin\Debug\ghMusicClient.exe
+C:\Users\Eduardo\Documents\Visual Studio 2013\Projects\ghMusic\ghMusic\bin\Debug\ghMusicClient.pdb
+C:\Users\Eduardo\Documents\Visual Studio 2013\Projects\ghMusic\ghMusic\bin\Debug\JsonTools.dll
+C:\Users\Eduardo\Documents\Visual Studio 2013\Projects\ghMusic\ghMusic\bin\Debug\migh.api.dll
+C:\Users\Eduardo\Documents\Visual Studio 2013\Projects\ghMusic\ghMusic\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Eduardo\Documents\Visual Studio 2013\Projects\ghMusic\ghMusic\bin\Debug\migh.api.pdb
+C:\Users\Eduardo\Documents\Visual Studio 2013\Projects\ghMusic\ghMusic\bin\Debug\Interop.WMPLib.dll
+C:\Users\Eduardo\Documents\Visual Studio 2013\Projects\ghMusic\ghMusic\bin\Debug\AxInterop.WMPLib.dll
+C:\Users\Eduardo\Documents\Visual Studio 2013\Projects\ghMusic\ghMusic\obj\Debug\ghMusic.csprojResolveAssemblyReference.cache
+C:\Users\Eduardo\Documents\Visual Studio 2013\Projects\ghMusic\ghMusic\obj\Debug\Interop.WMPLib.dll
+C:\Users\Eduardo\Documents\Visual Studio 2013\Projects\ghMusic\ghMusic\obj\Debug\AxInterop.WMPLib.dll
+C:\Users\Eduardo\Documents\Visual Studio 2013\Projects\ghMusic\ghMusic\obj\Debug\ghMusic.csproj.ResolveComReference.cache
+C:\Users\Eduardo\Documents\Visual Studio 2013\Projects\ghMusic\ghMusic\obj\Debug\ghMusicClient.Main_frm.resources
+C:\Users\Eduardo\Documents\Visual Studio 2013\Projects\ghMusic\ghMusic\obj\Debug\ghMusicClient.Properties.Resources.resources
+C:\Users\Eduardo\Documents\Visual Studio 2013\Projects\ghMusic\ghMusic\obj\Debug\ghMusic.csproj.GenerateResource.Cache
+C:\Users\Eduardo\Documents\Visual Studio 2013\Projects\ghMusic\ghMusic\obj\Debug\ghMusicClient.exe
+C:\Users\Eduardo\Documents\Visual Studio 2013\Projects\ghMusic\ghMusic\obj\Debug\ghMusicClient.pdb
+C:\Users\Eduardo\Desktop\ghMusic\ghMusic\bin\Debug\ghMusicClient.exe.config
+C:\Users\Eduardo\Desktop\ghMusic\ghMusic\obj\Debug\Interop.WMPLib.dll
+C:\Users\Eduardo\Desktop\ghMusic\ghMusic\obj\Debug\AxInterop.WMPLib.dll
+C:\Users\Eduardo\Desktop\ghMusic\ghMusic\obj\Debug\ghMusic.csproj.ResolveComReference.cache
+C:\Users\Eduardo\Desktop\ghMusic\ghMusic\obj\Debug\ghMusicClient.exe
+C:\Users\Eduardo\Desktop\ghMusic\ghMusic\obj\Debug\ghMusicClient.pdb
+C:\Users\Eduardo\Desktop\ghMusic\ghMusic\bin\Debug\ghMusicClient.exe
+C:\Users\Eduardo\Desktop\ghMusic\ghMusic\bin\Debug\ghMusicClient.pdb
+C:\Users\Eduardo\Desktop\ghMusic\ghMusic\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Eduardo\Desktop\ghMusic\ghMusic\bin\Debug\migh.api.pdb
+C:\Users\Eduardo\Desktop\ghMusic\ghMusic\bin\Debug\Interop.WMPLib.dll
+C:\Users\Eduardo\Desktop\ghMusic\ghMusic\bin\Debug\AxInterop.WMPLib.dll
+C:\Users\Eduardo\Desktop\ghMusic\ghMusic\obj\Debug\ghMusic.csprojResolveAssemblyReference.cache
+C:\Users\Eduardo\Desktop\ghMusic\ghMusic\obj\Debug\ghMusicClient.Main_frm.resources
+C:\Users\Eduardo\Desktop\ghMusic\ghMusic\obj\Debug\ghMusicClient.Properties.Resources.resources
+C:\Users\Eduardo\Desktop\ghMusic\ghMusic\obj\Debug\ghMusic.csproj.GenerateResource.Cache
+C:\Users\Edu\Desktop\ghMusic\ghMusic\bin\Debug\frmPlayer.resx
+C:\Users\Edu\Desktop\ghMusic\ghMusic\bin\Debug\frmPlayer.cs
+C:\Users\Edu\Desktop\ghMusic\ghMusic\bin\Debug\frmPlayer.Designer.cs
+C:\Users\Edu\Desktop\ghMusic\ghMusic\bin\Debug\migh.player.exe.config
+C:\Users\Edu\Desktop\ghMusic\ghMusic\bin\Debug\migh.player.exe
+C:\Users\Edu\Desktop\ghMusic\ghMusic\bin\Debug\migh.player.pdb
+C:\Users\Edu\Desktop\ghMusic\ghMusic\bin\Debug\FileDownloader.dll
+C:\Users\Edu\Desktop\ghMusic\ghMusic\bin\Debug\HtmlAgilityPack.dll
+C:\Users\Edu\Desktop\ghMusic\ghMusic\bin\Debug\migh.api.dll
+C:\Users\Edu\Desktop\ghMusic\ghMusic\bin\Debug\Newtonsoft.Json.dll
+C:\Users\Edu\Desktop\ghMusic\ghMusic\bin\Debug\FileDownloader.pdb
+C:\Users\Edu\Desktop\ghMusic\ghMusic\bin\Debug\FileDownloader.xml
+C:\Users\Edu\Desktop\ghMusic\ghMusic\bin\Debug\HtmlAgilityPack.pdb
+C:\Users\Edu\Desktop\ghMusic\ghMusic\bin\Debug\HtmlAgilityPack.xml
+C:\Users\Edu\Desktop\ghMusic\ghMusic\bin\Debug\migh.api.pdb
+C:\Users\Edu\Desktop\ghMusic\ghMusic\bin\Debug\Interop.WMPLib.dll
+C:\Users\Edu\Desktop\ghMusic\ghMusic\bin\Debug\AxInterop.WMPLib.dll
+C:\Users\Edu\Desktop\ghMusic\ghMusic\obj\Debug\Interop.WMPLib.dll
+C:\Users\Edu\Desktop\ghMusic\ghMusic\obj\Debug\AxInterop.WMPLib.dll
+C:\Users\Edu\Desktop\ghMusic\ghMusic\obj\Debug\ghMusic.csproj.ResolveComReference.cache
+C:\Users\Edu\Desktop\ghMusic\ghMusic\obj\Debug\ghMusicClient.frmDownload.resources
+C:\Users\Edu\Desktop\ghMusic\ghMusic\obj\Debug\ghMusicClient.frmLogin.resources
+C:\Users\Edu\Desktop\ghMusic\ghMusic\obj\Debug\ghMusicClient.frmSettings.resources
+C:\Users\Edu\Desktop\ghMusic\ghMusic\obj\Debug\ghMusicClient.frmSongStatus.resources
+C:\Users\Edu\Desktop\ghMusic\ghMusic\obj\Debug\ghMusicClient.frmPlayer.resources
+C:\Users\Edu\Desktop\ghMusic\ghMusic\obj\Debug\ghMusicClient.Properties.Resources.resources
+C:\Users\Edu\Desktop\ghMusic\ghMusic\obj\Debug\ghMusic.csproj.GenerateResource.Cache
+C:\Users\Edu\Desktop\ghMusic\ghMusic\obj\Debug\migh.player.exe
+C:\Users\Edu\Desktop\ghMusic\ghMusic\obj\Debug\migh.player.pdb
+C:\Users\Edu\Desktop\ghMusic\ghMusic\obj\Debug\ghMusic.csprojResolveAssemblyReference.cache
