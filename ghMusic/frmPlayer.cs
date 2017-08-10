@@ -1408,7 +1408,56 @@ namespace migh.player
                     {
                         media = MusicPlayer.currentPlaylist.get_Item(index);
                     }
-                    MusicPlayer.Ctlcontrols.playItem(media);
+                    //MusicPlayer.Ctlcontrols.playItem(media);
+
+                    string url = media.sourceURL;
+                    Song song = FindSongByURL(url);
+
+                    Image img = null;
+
+                    try
+                    {
+                        Artist _artist = Artist.get(lib.artist_list, song.artist_id);
+                        Album _album = Album.get(lib.album_list, song.album_id);
+                        lblSong_Title.Text = song.name;
+                        lblSong_Title.Tag = song;
+
+                        lblSong_Artist.Text = _artist.name;
+                        lblSong_Artist.Tag = _artist;
+
+                        lblSong_album.Text = _album.name;
+                        lblSong_album.Tag = _album;
+
+                        if (song.album_id != last_album_cover_id)
+                        {
+                            AlbumCover.Image = Properties.Resources.default_cover;
+                            BackgroundWorker ImageChangeWorker = new BackgroundWorker() { WorkerSupportsCancellation = true };
+                            ImageChangeWorker.DoWork += delegate(object s, DoWorkEventArgs args)
+                            {
+                                try
+                                {
+                                    Album album = Album.get(lib.album_list, song.album_id);
+                                    Artist artist = Artist.get(lib.artist_list, song.artist_id);
+
+                                    string album_cover_url = string.Format(lib.configuration.AlbumCoverImageFileURLFormat, artist.url_name, album.url_name);
+                                    img = Tools.DownloadImage(album_cover_url);
+                                    img = Tools.ResizeImage(img, AlbumCover.Width, AlbumCover.Height);
+                                }
+                                catch { }
+
+                                if (img != null)
+                                {
+                                    AlbumCover.Invoke((MethodInvoker)(() => AlbumCover.Image = img));
+                                }
+                                last_album_cover_id = song.album_id;
+                            };
+                            ImageChangeWorker.RunWorkerAsync();
+                        }
+                    }
+                    catch
+                    {
+
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -1675,7 +1724,7 @@ namespace migh.player
             {
                 song = song_playlist.ElementAt(index);
                 Artist artist = Artist.get(lib.artist_list, song.artist_id);
-                MessageBox.Show("No se ha podido reproducir: " + song.name + " - " + artist.name, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation); 
+                //MessageBox.Show("No se ha podido reproducir: " + song.name + " - " + artist.name, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation); 
                 return;
             }
         }

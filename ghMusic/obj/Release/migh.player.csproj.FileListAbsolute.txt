@@ -36,3 +36,9 @@ C:\Users\Edu\Desktop\ghMusic\ghMusic\obj\Release\migh.player.exe.manifest
 C:\Users\Edu\Desktop\ghMusic\ghMusic\obj\Release\migh.player.application
 C:\Users\Edu\Desktop\ghMusic\ghMusic\obj\Release\migh.player.exe
 C:\Users\Edu\Desktop\ghMusic\ghMusic\obj\Release\migh.player.pdb
+C:\GitHub\ghostwin\ghMusic\bin\Release\migh.player.exe.config
+C:\GitHub\ghostwin\ghMusic\obj\Release\Interop.WMPLib.dll
+C:\GitHub\ghostwin\ghMusic\obj\Release\AxInterop.WMPLib.dll
+C:\GitHub\ghostwin\ghMusic\obj\Release\migh.player.csproj.ResolveComReference.cache
+C:\GitHub\ghostwin\ghMusic\obj\Release\migh.player.exe
+C:\GitHub\ghostwin\ghMusic\obj\Release\migh.player.pdb

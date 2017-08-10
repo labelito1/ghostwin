@@ -17,13 +17,83 @@ using WMPLib;
 using JsonTools;
 using FileDownloader;
 
-namespace ghMusicClient
+namespace migh.player
 {
     public partial class frmPlayer : Form
     {
         const int WS_MINIMIZEBOX = 0x20000;
         const int CS_DBLCLKS = 0x8;
+        #region r
+        protected override void WndProc(ref Message m)
+        {
+            const int wmNcHitTest = 0x84;
+            const int htLeft = 10;
+            const int htRight = 11;
+            const int htTop = 12;
+            const int htTopLeft = 13;
+            const int htTopRight = 14;
+            const int htBottom = 15;
+            const int htBottomLeft = 16;
+            const int htBottomRight = 17;
 
+            if (m.Msg == wmNcHitTest)
+            {
+                int x = (int)(m.LParam.ToInt64() & 0xFFFF);
+                int y = (int)((m.LParam.ToInt64() & 0xFFFF0000) >> 16);
+                Point pt = PointToClient(new Point(x, y));
+                Size clientSize = ClientSize;
+                ///allow resize on the lower right corner
+                if (pt.X >= clientSize.Width - 16 && pt.Y >= clientSize.Height - 16 && clientSize.Height >= 16)
+                {
+                    m.Result = (IntPtr)(IsMirrored ? htBottomLeft : htBottomRight);
+                    return;
+                }
+                ///allow resize on the lower left corner
+                if (pt.X <= 16 && pt.Y >= clientSize.Height - 16 && clientSize.Height >= 16)
+                {
+                    m.Result = (IntPtr)(IsMirrored ? htBottomRight : htBottomLeft);
+                    return;
+                }
+                ///allow resize on the upper right corner
+                if (pt.X <= 16 && pt.Y <= 16 && clientSize.Height >= 16)
+                {
+                    m.Result = (IntPtr)(IsMirrored ? htTopRight : htTopLeft);
+                    return;
+                }
+                ///allow resize on the upper left corner
+                if (pt.X >= clientSize.Width - 16 && pt.Y <= 16 && clientSize.Height >= 16)
+                {
+                    m.Result = (IntPtr)(IsMirrored ? htTopLeft : htTopRight);
+                    return;
+                }
+                ///allow resize on the top border
+                if (pt.Y <= 16 && clientSize.Height >= 16)
+                {
+                    m.Result = (IntPtr)(htTop);
+                    return;
+                }
+                ///allow resize on the bottom border
+                if (pt.Y >= clientSize.Height - 16 && clientSize.Height >= 16)
+                {
+                    m.Result = (IntPtr)(htBottom);
+                    return;
+                }
+                ///allow resize on the left border
+                if (pt.X <= 16 && clientSize.Height >= 16)
+                {
+                    m.Result = (IntPtr)(htLeft);
+                    return;
+                }
+                ///allow resize on the right border
+                if (pt.X >= clientSize.Width - 16 && clientSize.Height >= 16)
+                {
+                    m.Result = (IntPtr)(htRight);
+                    return;
+                }
+            }
+            base.WndProc(ref m);
+        }
+        #endregion
         protected override CreateParams CreateParams
         {
             get
@@ -43,57 +113,7 @@ namespace ghMusicClient
 
         private void frmPlayer_Load(object sender, EventArgs e)
         {
-            #region color
-
-            JsonFile f = new JsonFile();
-            f.Directory = Application.StartupPath + "/";
-            f.FileName = "Settings";
-            Color color = f.Read<Color>();
-
-            //TopPanel.BackColor = color;
-            //RightPanel.BackColor = TopPanel.BackColor;
-            //BottomPanel.BackColor = TopPanel.BackColor;
-            //LeftPanel.BackColor = TopPanel.BackColor;
-            //btnSettings.FlatAppearance.BorderColor = TopPanel.BackColor;
-            //lblSong_Artist.ForeColor = TopPanel.BackColor;
-            //lblSong_album.ForeColor = TopPanel.BackColor;
-            #endregion
-            #region tooltip
-            // Create the ToolTip and associate with the Form container.
-            ToolTip toolTip1 = new ToolTip();
-
-            // Set up the delays for the ToolTip.
-            toolTip1.AutoPopDelay = 5000;
-            toolTip1.InitialDelay = 1000;
-            toolTip1.ReshowDelay = 500;
-            // Force the ToolTip text to be displayed whether or not the form is active.
-            toolTip1.ShowAlways = true;
-            string modoRepetir = "";
-            if (MusicPlayer.settings.getMode("loop"))
-            {
-                modoRepetir = "Activado";
-            }
-            else
-            {
-                modoRepetir = "Desactivado";
-            }
-            string modoAleatorio = "";
-            if (MusicPlayer.settings.getMode("shuffle"))
-            {
-                modoAleatorio = "Activado";
-            }
-            else
-            {
-                modoAleatorio = "Desactivado";
-            }
-            // Set up the ToolTip text for the Button and Checkbox.
-            toolTip1.SetToolTip(this.btnRepeat, "Repetir: " + modoRepetir);
-            toolTip1.SetToolTip(this.btnShuffle, "Aleatorio: " + modoAleatorio);
-            #endregion
-
-            MusicPlayer.enableContextMenu = true;
-            MusicPlayer.settings.volume = 25;
-            AlbumCover.Image = ghMusicClient.Properties.Resources.default_cover;
+            AlbumCover.Image = migh.player.Properties.Resources.default_cover;
             Login();
         }
         class ListBoxItem
@@ -129,8 +149,7 @@ namespace ghMusicClient
 
         Library lib = new Library();
         User user = new User();
-        WMPLib.IWMPPlaylist playlist;
-        WMPLib.IWMPMedia media;
+        
         int last_album_cover_id = -1;
 
         
@@ -146,9 +165,9 @@ namespace ghMusicClient
                 }
                 try
                 {
-                    string su = "ftp://ftp.drivehq.com/migh.lib";
-                    string u = "505darksoft";
-                    string p = "poder123";
+                    string su = "ftp://migh.somee.com/www.migh.somee.com/migh/migh.lib";
+                    string u = "eduardohley";
+                    string p = "@Poder123";
                     if(File.Exists(@"cookie.txt"))
                     {
                         JsonFile f = new JsonFile(Application.StartupPath, "cookie.txt");
@@ -237,11 +256,7 @@ namespace ghMusicClient
                     worker.ProgressChanged += new ProgressChangedEventHandler(WorkerProgressChanged);
                     worker.RunWorkerAsync();
                 }
-                try
-                {
-                    MusicPlayer.enableContextMenu = false;
-                }
-                catch { }
+                
                 lblTitle.AllowDrop = true;
                 lblTitle.DragEnter += new DragEventHandler(lblTitle_DragEnter);
                 lblTitle.DragDrop += new DragEventHandler(lblTitle_DragDrop);
@@ -312,7 +327,7 @@ namespace ghMusicClient
 
         private void Exitbtn_Click(object sender, EventArgs e)
         {
-            if(MessageBox.Show("¿Está seguro?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            if(MessageBox.Show("¿Estás seguro?", "Salir", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 if(Downloading)
                 {
@@ -426,72 +441,70 @@ namespace ghMusicClient
             }
             return null;
         }
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-            if(MusicPlayer.settings.getMode("loop"))
-            {
-                btnRepeat.Image = Properties.Resources.Repeat_on;
-            }
-            else
-            {
-                btnRepeat.Image = Properties.Resources.Repeat_off;
-            }
-            if (MusicPlayer.settings.getMode("shuffle"))
-            {
-                btnShuffle.Image = Properties.Resources.Shuffle_on;
-            }
-            else
-            {
-                btnShuffle.Image = Properties.Resources.Shuffle_off;
-            }
+        //private void Timer_Tick(object sender, EventArgs e)
+        //{
+        //    //if(MusicPlayer.settings.getMode("loop"))
+        //    //{
+        //    //    btnRepeat.Image = Properties.Resources.Repeat_on;
+        //    //}
+        //    //else
+        //    //{
+        //    //    btnRepeat.Image = Properties.Resources.Repeat_off;
+        //    //}
+        //    //if (MusicPlayer.settings.getMode("shuffle"))
+        //    //{
+        //    //    btnShuffle.Image = Properties.Resources.Shuffle_on;
+        //    //}
+        //    //else
+        //    //{
+        //    //    btnShuffle.Image = Properties.Resources.Shuffle_off;
+        //    //}
 
-            if(MusicPlayer.playState == WMPPlayState.wmppsPlaying)
-            {
-                try
-                {
-                    if (MusicPlayer.Ctlcontrols.currentItem != null)
-                    {
+        //    if (MusicPlayer.playState == WMPPlayState.wmppsPlaying)
+        //    {
+        //        try
+        //        {
+        //            if (MusicPlayer.Ctlcontrols.currentItem != null)
+        //            {
 
-                        string song_file_name = MusicPlayer.Ctlcontrols.currentItem.name + ".m4a";
-                        string song_url_name = Tools.ConvertToGitHubFile(song_file_name, lib.configuration.GitHubFile_TextToReplace_List);
-                        int index = 0;
-                        for (int i = 0; i < MusicPlayer.currentPlaylist.count - 1; i++)
-                        {
-                            if (MusicPlayer.currentMedia.isIdentical[playlist.Item[i]])
-                            {
-                                index = i;
-                                break;
-                            }
-                        }
-                        if (MusicPlayer.currentPlaylist.count == song_playlist.Count)
-                        {
-                            //Song song = song_playlist.ElementAt(index);
-                            //Album album = Album.get(lib.album_list, song.album_id);
-                            //Artist artist = Artist.get(lib.artist_list, song.artist_id);
-                            //lblSong_Title.Text = song.name;
-                            //lblSong_Artist.Text = artist.name;
-                            //lblSong_album.Text = album.name;
-                            if (MusicPlayer.Ctlcontrols.currentPositionString == "" || MusicPlayer.Ctlcontrols.currentPositionString == null)
-                            {
-                                lblSong_duration.Text = MusicPlayer.currentMedia.durationString;
-                            }
-                            else
-                            {
-                                lblSong_duration.Text = MusicPlayer.Ctlcontrols.currentPositionString + " / " + MusicPlayer.currentMedia.durationString;
-                            }
-                        }
-                        //string audio_url = string.Format(Configuration.Data.AudioFileURLFormat, 
-                        // lblTitle.Text = song_file;
-                    }
-                }
-                catch
-                {
-                    Timer.Stop();
-                    Timer.Dispose();
-                    Timer.Start();
-                }
-            }
-        }
+        //                //string song_file_name = MusicPlayer.Ctlcontrols.currentItem.name + ".m4a";
+        //                //string song_url_name = Tools.ConvertToGitHubFile(song_file_name, lib.configuration.GitHubFile_TextToReplace_List);
+        //                //int index = 0;
+        //                //for (int i = 0; i < MusicPlayer.currentPlaylist.count - 1; i++)
+        //                //{
+        //                //    if (MusicPlayer.currentMedia.isIdentical[playlist.Item[i]])
+        //                //    {
+        //                //        index = i;
+        //                //        break;
+        //                //    }
+        //                //}
+        //                if (MusicPlayer.currentPlaylist.count == song_playlist.Count)
+        //                {
+        //                    //Song song = song_playlist.ElementAt(index);
+        //                    //Album album = Album.get(lib.album_list, song.album_id);
+        //                    //Artist artist = Artist.get(lib.artist_list, song.artist_id);
+        //                    //lblSong_Title.Text = song.name;
+        //                    //lblSong_Artist.Text = artist.name;
+        //                    //lblSong_album.Text = album.name;
+        //                    if (MusicPlayer.Ctlcontrols.currentPositionString == "" || MusicPlayer.Ctlcontrols.currentPositionString == null)
+        //                    {
+        //                        lblSong_duration.Text = MusicPlayer.currentMedia.durationString;
+        //                    }
+        //                    else
+        //                    {
+        //                        lblSong_duration.Text = MusicPlayer.Ctlcontrols.currentPositionString + " / " + MusicPlayer.currentMedia.durationString;
+        //                    }
+        //                }
+        //                //string audio_url = string.Format(Configuration.Data.AudioFileURLFormat, 
+        //                // lblTitle.Text = song_file;
+        //            }
+        //        }
+        //        catch
+        //        {
+
+        //        }
+        //    }
+        //}
 
         private void AlbumCover_DoubleClick(object sender, EventArgs e)
         {
@@ -507,84 +520,85 @@ namespace ghMusicClient
 
         private void MusicPlayer_CurrentItemChange(object sender, AxWMPLib._WMPOCXEvents_CurrentItemChangeEvent e)
         {
-            string url = MusicPlayer.Ctlcontrols.currentItem.sourceURL;
-            Song selectedSong = FindSongByURL(url);
-            if (selectedSong != null)
-            {
-                Artist artist = Artist.get(lib.artist_list, selectedSong.artist_id);
-                Album album = Album.get(lib.album_list, selectedSong.album_id);
-                lblSong_Title.Text = selectedSong.name;
-                lblSong_Title.Tag = selectedSong;
+            //string url = MusicPlayer.Ctlcontrols.currentItem.sourceURL;
+            //Song selectedSong = FindSongByURL(url);
+            //if (selectedSong != null)
+            //{
+            //    try
+            //    {
+            //        Artist artist = Artist.get(lib.artist_list, selectedSong.artist_id);
+            //        Album album = Album.get(lib.album_list, selectedSong.album_id);
+            //        lblSong_Title.Text = selectedSong.name;
+            //        lblSong_Title.Tag = selectedSong;
 
-                lblSong_Artist.Text = artist.name;
-                lblSong_Artist.Tag = artist;
+            //        lblSong_Artist.Text = artist.name;
+            //        lblSong_Artist.Tag = artist;
 
-                lblSong_album.Text = album.name;
-                lblSong_album.Tag = album;
-            }
-            Image img = null;
-            Song song = new Song();
-            int index = 0;
-            for (int i = 0; i < MusicPlayer.currentPlaylist.count - 1; i++)
-            {
-                if (MusicPlayer.currentMedia.isIdentical[playlist.Item[i]])
-                {
-                    index = i;
-                    break;
-                }
-            }
-            if (MusicPlayer.currentPlaylist.count == song_playlist.Count)
-            {
-                song = song_playlist.ElementAt(index);
-            }
-            try
-            {
-                if (song.album_id != last_album_cover_id)
-                {
-                    BackgroundWorker ImageChangeWorker = new BackgroundWorker() { WorkerSupportsCancellation = true };
-                    ImageChangeWorker.DoWork += delegate(object s, DoWorkEventArgs args)
-                    {
-                        try
-                        {
-                            Album album = Album.get(lib.album_list, song.album_id);
-                            Artist artist = Artist.get(lib.artist_list, song.artist_id);
-                            AlbumCover.Image = Properties.Resources.default_cover;
-                            string album_cover_url = string.Format(lib.configuration.AlbumCoverImageFileURLFormat, artist.url_name, album.url_name);
-                            img = Tools.DownloadImage(album_cover_url);
-                            img = Tools.ResizeImage(img, 200, 200);
-                        }
-                        catch { }
+            //        lblSong_album.Text = album.name;
+            //        lblSong_album.Tag = album;
+            //    }
+            //    catch { }
+            //}
+            
+            //int index = 0;
+            //for (int i = 0; i < MusicPlayer.currentPlaylist.count - 1; i++)
+            //{
+            //    if (MusicPlayer.currentMedia.isIdentical[playlist.Item[i]])
+            //    {
+            //        index = i;
+            //        break;
+            //    }
+            //}
+            //Image img = null;
+            //Song song = new Song();
+            //if (MusicPlayer.currentPlaylist.count == song_playlist.Count)
+            //{
+            //    song = song_playlist.ElementAt(index);
+            //}
+            //try
+            //{
+            //    if (song.album_id != last_album_cover_id)
+            //    {
+            //        AlbumCover.Image = Properties.Resources.default_cover;
+            //        BackgroundWorker ImageChangeWorker = new BackgroundWorker() { WorkerSupportsCancellation = true };
+            //        ImageChangeWorker.DoWork += delegate(object s, DoWorkEventArgs args)
+            //        {
+            //            try
+            //            {
+            //                Album album = Album.get(lib.album_list, song.album_id);
+            //                Artist artist = Artist.get(lib.artist_list, song.artist_id);
 
-                        if (img != null)
-                        {
-                             AlbumCover.Image = img;
-                        }
-                        last_album_cover_id = song.album_id;
-                        ImageChangeWorker.Dispose();
-                    };
-                    ImageChangeWorker.RunWorkerAsync();
-                }
-            }
-            catch
-            {
+            //                string album_cover_url = string.Format(lib.configuration.AlbumCoverImageFileURLFormat, artist.url_name, album.url_name);
+            //                img = Tools.DownloadImage(album_cover_url);
+            //                img = Tools.ResizeImage(img, AlbumCover.Width, AlbumCover.Height);
+            //            }
+            //            catch { }
 
-            }
-            finally
-            {
-                img = null;
-            }
+            //            if (img != null)
+            //            {
+            //                AlbumCover.Invoke((MethodInvoker)(() => AlbumCover.Image = img));
+            //            }
+            //            last_album_cover_id = song.album_id;
+            //        };
+            //        ImageChangeWorker.RunWorkerAsync();
+            //    }
+            //}
+            //catch
+            //{
+
+            //}
         }
 
-        private void Timer_Reset_Tick(object sender, EventArgs e)
-        {
-            Timer.Stop();
-            Timer.Dispose();
-            //MusicPlayer.settings.per
-            if (MusicPlayer.playState == WMPPlayState.wmppsPlaying)
-            {
-                Timer.Start();
-            }
-        }
+        //private void Timer_Reset_Tick(object sender, EventArgs e)
+        //{
+        //    Timer.Stop();
+        //    Timer.Dispose();
+        //    //MusicPlayer.settings.per
+        //    if (MusicPlayer.playState != WMPPlayState.wmppsStopped || MusicPlayer.playState != WMPPlayState.wmppsPaused)
+        //    {
+        //        Timer.Start();
+        //    }
+        //}
 
         private void btnRepeat_Click(object sender, EventArgs e)
         {
@@ -598,28 +612,6 @@ namespace ghMusicClient
                 MusicPlayer.settings.setMode("loop", true);
                 btnRepeat.Image = Properties.Resources.Repeat_on;
             }
-            #region tooltip
-            // Create the ToolTip and associate with the Form container.
-            ToolTip toolTip1 = new ToolTip();
-
-            // Set up the delays for the ToolTip.
-            toolTip1.AutoPopDelay = 5000;
-            toolTip1.InitialDelay = 1000;
-            toolTip1.ReshowDelay = 500;
-            // Force the ToolTip text to be displayed whether or not the form is active.
-            toolTip1.ShowAlways = true;
-            string modo = "";
-            if(MusicPlayer.settings.getMode("loop"))
-            {
-                modo = "Activado";
-            }
-            else
-            {
-                modo = "Desactivado";
-            }
-            // Set up the ToolTip text for the Button and Checkbox.
-            toolTip1.SetToolTip(this.btnRepeat, "Repetir: " + modo);
-            #endregion
         }
 
         private void btnShuffle_Click(object sender, EventArgs e)
@@ -634,44 +626,135 @@ namespace ghMusicClient
                 MusicPlayer.settings.setMode("shuffle", true);
                 btnShuffle.Image = Properties.Resources.Shuffle_on;
             }
-            #region tooltip
-            // Create the ToolTip and associate with the Form container.
-            ToolTip toolTip1 = new ToolTip();
-
-            // Set up the delays for the ToolTip.
-            toolTip1.AutoPopDelay = 5000;
-            toolTip1.InitialDelay = 1000;
-            toolTip1.ReshowDelay = 500;
-            // Force the ToolTip text to be displayed whether or not the form is active.
-            toolTip1.ShowAlways = true;
-            string modo = "";
-            if (MusicPlayer.settings.getMode("shuffle"))
-            {
-                modo = "Activado";
-            }
-            else
-            {
-                modo = "Desactivado";
-            }
-            // Set up the ToolTip text for the Button and Checkbox.
-            toolTip1.SetToolTip(this.btnShuffle, "Aleatorio: " + modo);
-            #endregion
         }
 
         private void MusicPlayer_PlayStateChange(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e)
         {
-            //lblTitle.Text = MusicPlayer.playState.ToString();
-            Timer_Reset.Stop();
-            Timer_Reset.Dispose();
-            Timer_Reset.Start();
-            if (MusicPlayer.playState == WMPPlayState.wmppsPlaying)
+            //if (MusicPlayer.playState == WMPPlayState.wmppsPaused || MusicPlayer.playState == WMPPlayState.wmppsStopped)
+            //{
+            //    Timer.Stop();
+            //    Timer.Dispose();
+            //}
+            //else
+            //{
+            //    Timer.Stop();
+            //    Timer.Start();
+            //}
+            if (MusicPlayer.playState == WMPPlayState.wmppsTransitioning)
             {
-                Timer.Start();
+                //Timer.Stop();
+                //Timer.Enabled = true;
+                //Timer.Start();
+                //Timer_Reset.Stop();
+                //Timer_Reset.Enabled = true;
+                //Timer_Reset.Start();
+                //if(MusicPlayer.Ctlcontrols.currentItem != null)
+                //{
+                //    string url = MusicPlayer.Ctlcontrols.currentItem.sourceURL;
+                //    Song song = FindSongByURL(url);
+                //    Artist artist = Artist.get(lib.artist_list, song.artist_id);
+                //    Album album = Album.get(lib.album_list, song.album_id);
+
+                //    lblSong_Title.Text = song.name;
+                //    lblSong_Title.Tag = song;
+
+                //    lblSong_Artist.Text = artist.name;
+                //    lblSong_Artist.Tag = artist;
+
+                //    lblSong_album.Text = album.name;
+                //    lblSong_album.Tag = album;
+                //}
+                lblLoading.Visible = true;
             }
             else
             {
-                Timer.Stop();
-                Timer.Dispose();
+                lblLoading.Visible = false;
+            }
+            if (MusicPlayer.playState == WMPPlayState.wmppsPlaying)
+            {
+                string url = MusicPlayer.Ctlcontrols.currentItem.sourceURL;
+                Song song = FindSongByURL(url);
+                //if (selectedSong != null)
+                //{
+                //    try
+                //    {
+                //        Artist artist = Artist.get(lib.artist_list, selectedSong.artist_id);
+                //        Album album = Album.get(lib.album_list, selectedSong.album_id);
+                //        lblSong_Title.Text = selectedSong.name;
+                //        lblSong_Title.Tag = selectedSong;
+
+                //        lblSong_Artist.Text = artist.name;
+                //        lblSong_Artist.Tag = artist;
+
+                //        lblSong_album.Text = album.name;
+                //        lblSong_album.Tag = album;
+                //    }
+                //    catch { }
+                //}
+
+                //int index = 0;
+                //for (int i = 0; i < MusicPlayer.currentPlaylist.count - 1; i++)
+                //{
+                //    if (MusicPlayer.currentMedia.isIdentical[playlist.Item[i]])
+                //    {
+                //        index = i;
+                //        break;
+                //    }
+                //}
+                Image img = null;
+                //Song song = new Song();
+                //if (MusicPlayer.currentPlaylist.count == song_playlist.Count)
+                //{
+                //    song = song_playlist.ElementAt(index);
+                //}
+                try
+                {
+                    Artist _artist = Artist.get(lib.artist_list, song.artist_id);
+                    Album _album = Album.get(lib.album_list, song.album_id);
+                    lblSong_Title.Text = song.name;
+                    lblSong_Title.Tag = song;
+
+                    lblSong_Artist.Text = _artist.name;
+                    lblSong_Artist.Tag = _artist;
+
+                    lblSong_album.Text = _album.name;
+                    lblSong_album.Tag = _album;
+
+                    if (song.album_id != last_album_cover_id)
+                    {
+                        AlbumCover.Image = Properties.Resources.default_cover;
+                        BackgroundWorker ImageChangeWorker = new BackgroundWorker() { WorkerSupportsCancellation = true };
+                        ImageChangeWorker.DoWork += delegate(object s, DoWorkEventArgs args)
+                        {
+                            try
+                            {
+                                Album album = Album.get(lib.album_list, song.album_id);
+                                Artist artist = Artist.get(lib.artist_list, song.artist_id);
+
+                                string album_cover_url = string.Format(lib.configuration.AlbumCoverImageFileURLFormat, artist.url_name, album.url_name);
+                                img = Tools.DownloadImage(album_cover_url);
+                                img = Tools.ResizeImage(img, AlbumCover.Width, AlbumCover.Height);
+                            }
+                            catch { }
+
+                            if (img != null)
+                            {
+                                AlbumCover.Invoke((MethodInvoker)(() => AlbumCover.Image = img));
+                            }
+                            last_album_cover_id = song.album_id;
+                        };
+                        ImageChangeWorker.RunWorkerAsync();
+                    }
+                }
+                catch
+                {
+
+                }
+                //Timer.Start();
+            }
+            else
+            {
+
             }
         }
 
@@ -798,41 +881,18 @@ namespace ghMusicClient
 
         private void lblSong_Artist_DoubleClick(object sender, EventArgs e)
         {
-            try
-            {
-                Artist artist = FindArtistByName(lblSong_Artist.Text);
-                SelectArtist(artist);
-            }
-            catch { }
+            
         }
         private void lblSong_album_DoubleClick(object sender, EventArgs e)
         {
-            try
-            {
-                Artist artist = FindArtistByName(lblSong_Artist.Text);
-                Album album = new Album();
-                foreach(Album a in lib.album_list)
-                {
-                    if(a.name.ToLower() == lblSong_album.Text.ToLower() && a.artist_id == artist.id)
-                    {
-                        album = a;
-                    }
-
-                }
-                SelectAlbum(artist, album); 
-            }
-            catch
-            {
-
-            }
+            
         }
 
         #region search
         private void Search()
         {
             cbxSearch.DataSource = null;
-            cbxSearch.DroppedDown = false;
-            cbxSearch.MaxDropDownItems = 20;
+            //cbxSearch.DroppedDown = false;
             string text = txtSearch.Text;
             if (text != "")
             {
@@ -928,14 +988,15 @@ namespace ghMusicClient
             public object Value { get; set; }
             public override string ToString()
             {
-                if(this.Type != SearchItemType.None)
+                if(this.Type == SearchItemType.Artist)
+                {
+                    return " •  " + Text;
+                }
+                if (this.Type == SearchItemType.Song || this.Type == SearchItemType.Album)
                 {
                     return " •  " + Text + " - " + Artist;
                 }
-                else
-                {
-                    return Text;
-                }
+                return Text;
             }
         }
         private List<Artist> SearchArtistsByName(string name)
@@ -1036,15 +1097,71 @@ namespace ghMusicClient
         #region txtSearch
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            Search();
+            if(!txtSearch.Text.StartsWith(":"))
+            {
+                Search();
+            }
+            if(txtSearch.Text == "")
+            {
+                cbxSearch.DroppedDown = false;
+                cbxSearch.Items.Clear();
+                cbxSearch.SelectedIndex = -1;
+            }
         }
         private void txtSearch_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                Search();
-                e.Handled = true;
-                e.SuppressKeyPress = true;
+                if (txtSearch.Text == "::download.library")
+                {
+                    foreach (Song song in lib.song_list)
+                    {
+                        Artist artist = Artist.get(lib.artist_list, song.artist_id);
+                        DownloadItem item = new DownloadItem();
+                        item.song = song;
+                        item.artist = artist.name;
+                        bool exists = false;
+                        foreach (DownloadItem i in DownloadList)
+                        {
+                            if (i.song == song)
+                            {
+                                exists = true;
+                            }
+                        }
+                        if (!exists)
+                        {
+                            DownloadList.Add(item);
+                        }
+                    }
+
+                    if (DownloadIndex == 0 && !Downloading)
+                    {
+                        TriggerDownload();
+                    }
+                    txtSearch.Text = "";
+                    return;
+                }
+                if (txtSearch.Text == ":song.count")
+                {
+                    txtSearch.Text = lib.song_list.Count.ToString();
+                    return;
+                }
+                if (txtSearch.Text == ":restart")
+                {
+                    Application.Restart();
+                }
+                if (txtSearch.Text == ":song.status")
+                {
+                    string FolderCheckFormat = lib.configuration.AlbumCoverImageFileURLFormat.Replace("blob", "tree").Replace("/Cover.jpg?raw=true", "");
+                    frmSongStatus frm = new frmSongStatus();
+                    frm.FolderCheckFormat = FolderCheckFormat;
+                    frm.AudioFileURLFormat = Configuration.Data.AudioFileURLFormat;
+                    frm.user = user;
+                    frm.lib = lib;
+                    txtSearch.Text = "";
+                    frm.Show();
+                    return;
+                }
             }
         }
         #endregion
@@ -1061,8 +1178,9 @@ namespace ghMusicClient
         {
             if (DownloadList.Count > 0)
             {
-                Downloading = false;
+                fileDownloader.CancelDownloadAsync();
                 DownloadList.Clear();
+                Downloading = false;
             }
         }
 
@@ -1122,7 +1240,7 @@ namespace ghMusicClient
                     Artist artist = Artist.get(lib.artist_list, song.artist_id);
                     Album album = Album.get(lib.album_list, song.album_id);
                     Downloading = true;
-                    if(File.Exists(Application.StartupPath + "\\Descargas\\" + artist.name + "\\" + album.name + "\\" + song.file_name))
+                    if(File.Exists(Application.StartupPath + "\\Descargas\\" + artist.url_name + "\\" + album.url_name + "\\" + song.file_name))
                     {
                         DownloadList.ElementAt(DownloadIndex).status = "Completado";
                         DownloadList.ElementAt(DownloadIndex).progress = 100;
@@ -1160,7 +1278,7 @@ namespace ghMusicClient
             }
         }
         public static bool Downloading = false;
-        string currentDownload = "";
+        public static string currentDownload = "";
         int DownloadIndex = 0;
         public static List<DownloadItem> DownloadList = new List<DownloadItem>();
         public static IFileDownloader fileDownloader = new FileDownloader.FileDownloader();
@@ -1170,7 +1288,7 @@ namespace ghMusicClient
             Artist artist = Artist.get(lib.artist_list, song.artist_id);
             Album album = Album.get(lib.album_list, song.album_id);
             string file_url = string.Format(lib.configuration.AudioFileURLFormat, artist.url_name, album.url_name, Tools.ConvertToGitHubFile(song.file_name, lib.configuration.GitHubFile_TextToReplace_List));
-            string downloadDestinationPath = Application.StartupPath + "\\Descargas\\" + artist.name + "\\" + album.name;
+            string downloadDestinationPath = Application.StartupPath + "\\Descargas\\" + artist.url_name + "\\" + album.url_name;
             string fileName = downloadDestinationPath + "\\" + song.file_name;
             if (!Directory.Exists(downloadDestinationPath))
             {
@@ -1199,19 +1317,40 @@ namespace ghMusicClient
         {
             if(eventArgs.State == CompletedState.Succeeded)
             {
-                if (DownloadList.Count > 0 && DownloadList.Count > DownloadIndex)
+                try
+                {
+                    if (DownloadList.Count > 0 && DownloadList.Count > DownloadIndex)
                     DownloadList.ElementAt(DownloadIndex).status = "Completado";
+                }
+                catch
+                {
+                    
+                }
             }
             if (eventArgs.State == CompletedState.Failed)
             {
-                if (DownloadList.Count > 0 && DownloadList.Count > DownloadIndex)
-                    DownloadList.ElementAt(DownloadIndex).status = "Fallido";
+                try
+                {
+                    if (DownloadList.Count > 0 && DownloadList.Count > DownloadIndex)
+                        DownloadList.ElementAt(DownloadIndex).status = "Fallido";
+                }
+                catch
+                {
+                    
+                }
             }
             if(eventArgs.State == CompletedState.Canceled)
             {
-                if (DownloadList.Count > 0 && DownloadList.Count > DownloadIndex)
-                    DownloadList.ElementAt(DownloadIndex).status = "Cancelado";
-                    DownloadList.ElementAt(DownloadIndex).progress = 0;
+                try
+                {
+                    if (DownloadList.Count > 0 && DownloadList.Count > DownloadIndex)
+                        DownloadList.ElementAt(DownloadIndex).status = "Cancelado";
+                        DownloadList.ElementAt(DownloadIndex).progress = 0;
+                }
+                catch
+                {
+                    
+                }
             }
             DownloadIndex++;
             lblTitle.Invoke((MethodInvoker)(() => lblTitle.Text = user.message));
@@ -1222,20 +1361,25 @@ namespace ghMusicClient
         #region listSongs
         private void listSongs_DoubleClick(object sender, EventArgs e)
         {
-            song_playlist.Clear();
-            Song song = (Song)((ListBoxItem)listSongs.SelectedItem).Value;
-            try
+            AxWMPLib.AxWindowsMediaPlayer aux = MusicPlayer;
+            if (listSongs.SelectedItems.Count == 1)
             {
-                playlist = MusicPlayer.playlistCollection.newPlaylist("lista");
-
-                ListBoxItem si = (ListBoxItem)listSongs.SelectedItem;
-                int index = listSongs.Items.IndexOf(si);
-
-                int i = 0;
-                foreach (ListBoxItem item in listSongs.Items)
+                song_playlist.Clear();
+                //Song song = (Song)((ListBoxItem)listSongs.SelectedItem).Value;
+                try
                 {
-                    if (i >= index)
+                    int index = 0;
+                    WMPLib.IWMPMedia media = null;
+                    WMPLib.IWMPPlaylist playlist = MusicPlayer.playlistCollection.newPlaylist("lista");
+
+                    ListBoxItem si = (ListBoxItem)listSongs.SelectedItem;
+                    index = listSongs.Items.IndexOf(si);
+
+                    int i = 0;
+                    foreach (ListBoxItem item in listSongs.Items)
                     {
+                        //if (i >= index)
+                        //{
                         Song s = (Song)item.Value;
                         Album album = Album.get(lib.album_list, s.album_id);
                         Artist artist = Artist.get(lib.artist_list, s.artist_id);
@@ -1246,27 +1390,82 @@ namespace ghMusicClient
                         media = MusicPlayer.newMedia(ip);
                         song_playlist.Add(s);
                         playlist.appendItem(media);
+                        //}
+                        //i++;
                     }
-                    i++;
+
+                    if (MusicPlayer.settings.getMode("shuffle"))
+                    {
+                        MusicPlayer.settings.setMode("shuffle", false);
+                        MusicPlayer.currentPlaylist = playlist;
+                        MusicPlayer.settings.setMode("shuffle", true);
+                    }
+                    else
+                    {
+                        MusicPlayer.currentPlaylist = playlist;
+                    }
+                    if (listSongs.SelectedItems.Count == 1)
+                    {
+                        media = MusicPlayer.currentPlaylist.get_Item(index);
+                    }
+                    //MusicPlayer.Ctlcontrols.playItem(media);
+
+                    string url = media.sourceURL;
+                    Song song = FindSongByURL(url);
+
+                    Image img = null;
+
+                    try
+                    {
+                        Artist _artist = Artist.get(lib.artist_list, song.artist_id);
+                        Album _album = Album.get(lib.album_list, song.album_id);
+                        lblSong_Title.Text = song.name;
+                        lblSong_Title.Tag = song;
+
+                        lblSong_Artist.Text = _artist.name;
+                        lblSong_Artist.Tag = _artist;
+
+                        lblSong_album.Text = _album.name;
+                        lblSong_album.Tag = _album;
+
+                        if (song.album_id != last_album_cover_id)
+                        {
+                            AlbumCover.Image = Properties.Resources.default_cover;
+                            BackgroundWorker ImageChangeWorker = new BackgroundWorker() { WorkerSupportsCancellation = true };
+                            ImageChangeWorker.DoWork += delegate(object s, DoWorkEventArgs args)
+                            {
+                                try
+                                {
+                                    Album album = Album.get(lib.album_list, song.album_id);
+                                    Artist artist = Artist.get(lib.artist_list, song.artist_id);
+
+                                    string album_cover_url = string.Format(lib.configuration.AlbumCoverImageFileURLFormat, artist.url_name, album.url_name);
+                                    img = Tools.DownloadImage(album_cover_url);
+                                    img = Tools.ResizeImage(img, AlbumCover.Width, AlbumCover.Height);
+                                }
+                                catch { }
+
+                                if (img != null)
+                                {
+                                    AlbumCover.Invoke((MethodInvoker)(() => AlbumCover.Image = img));
+                                }
+                                last_album_cover_id = song.album_id;
+                            };
+                            ImageChangeWorker.RunWorkerAsync();
+                        }
+                    }
+                    catch
+                    {
+
+                    }
                 }
-                if (MusicPlayer.settings.getMode("shuffle"))
+                catch (Exception ex)
                 {
-                    MusicPlayer.settings.setMode("shuffle", false);
-                    MusicPlayer.currentPlaylist = playlist;
-                    MusicPlayer.settings.setMode("shuffle", true);
-                }
-                else
-                {
-                    MusicPlayer.currentPlaylist = playlist;
+                    MessageBox.Show(ex.Message);
                 }
             }
-            catch { }
-            MusicPlayer.Ctlcontrols.play();
         }
-        private void listSongs_MouseDown(object sender, MouseEventArgs e)
-        {
-            
-        }
+
         #endregion
 
         #region listAlbums
@@ -1397,7 +1596,7 @@ namespace ghMusicClient
 
         private void lblSong_Title_MouseDown(object sender, MouseEventArgs e)
         {
-            if (user.premium)
+            if (user.premium && ModifierKeys.HasFlag(Keys.Control))
             {
                 if(lblSong_Title.Tag != null)
                 {
@@ -1412,7 +1611,7 @@ namespace ghMusicClient
 
         private void lblSong_Artist_MouseDown(object sender, MouseEventArgs e)
         {
-            if (user.premium)
+            if (user.premium && ModifierKeys.HasFlag(Keys.Control))
             {
                 if (lblSong_Artist.Tag != null)
                 {
@@ -1427,7 +1626,7 @@ namespace ghMusicClient
 
         private void lblSong_album_MouseDown(object sender, MouseEventArgs e)
         {
-            if (user.premium)
+            if (user.premium && ModifierKeys.HasFlag(Keys.Control))
             {
                 if (lblSong_album.Tag != null)
                 {
@@ -1440,15 +1639,164 @@ namespace ghMusicClient
             }
         }
 
-        private void lblTitle_Click(object sender, EventArgs e)
+        private void lblTitle_DragEnter(object sender, DragEventArgs e)
+        {
+            e.Effect = DragDropEffects.Copy;
+        }
+
+        private void lblTitle_DoubleClick(object sender, EventArgs e)
         {
             frmDownload frm = new frmDownload();
             frm.ShowDialog(this);
         }
 
-        private void lblTitle_DragEnter(object sender, DragEventArgs e)
+        private void listSongs_KeyDown(object sender, KeyEventArgs e)
         {
-            e.Effect = DragDropEffects.Copy;
+            if(e.KeyCode == Keys.Enter)
+            {
+                if(listSongs.SelectedItems.Count == 1)
+                {
+                    song_playlist.Clear();
+
+                    //Song song = (Song)((ListBoxItem)listSongs.SelectedItem).Value;
+                    try
+                    {
+                        int index = 0;
+                        WMPLib.IWMPMedia media = null;
+                        WMPLib.IWMPPlaylist playlist = MusicPlayer.playlistCollection.newPlaylist("lista");
+
+                        ListBoxItem si = (ListBoxItem)listSongs.SelectedItem;
+                        index = listSongs.Items.IndexOf(si);
+
+                        int i = 0;
+                        foreach (ListBoxItem item in listSongs.Items)
+                        {
+                            //if (i >= index)
+                            //{
+                            Song s = (Song)item.Value;
+                            Album album = Album.get(lib.album_list, s.album_id);
+                            Artist artist = Artist.get(lib.artist_list, s.artist_id);
+                            string artist_name = artist.url_name;
+                            string album_name = album.url_name;
+                            string song_name = Tools.ConvertToGitHubFile(s.url_name, lib.configuration.GitHubFile_TextToReplace_List);
+                            string ip = string.Format(lib.configuration.AudioFileURLFormat, artist_name, album_name, song_name);
+                            media = MusicPlayer.newMedia(ip);
+                            song_playlist.Add(s);
+                            playlist.appendItem(media);
+                            //}
+                            //i++;
+                        }
+
+                        if (MusicPlayer.settings.getMode("shuffle"))
+                        {
+                            MusicPlayer.settings.setMode("shuffle", false);
+                            MusicPlayer.currentPlaylist = playlist;
+                            MusicPlayer.settings.setMode("shuffle", true);
+                        }
+                        else
+                        {
+                            MusicPlayer.currentPlaylist = playlist;
+                        }
+                        if (listSongs.SelectedItems.Count == 1)
+                        {
+                            media = MusicPlayer.currentPlaylist.get_Item(index);
+                        }
+                        MusicPlayer.Ctlcontrols.playItem(media);
+                    }
+                    catch { }
+                }
+            }
+        }
+
+        private void MusicPlayer_MediaError(object sender, AxWMPLib._WMPOCXEvents_MediaErrorEvent e)
+        {
+            int index = 0;
+            for (int i = 0; i < MusicPlayer.currentPlaylist.count - 1; i++)
+            {
+                if (MusicPlayer.currentMedia.name == MusicPlayer.currentPlaylist.Item[i].name)
+                {
+                    index = i;
+                    break;
+                }
+            }
+            Song song = new Song();
+            if (MusicPlayer.currentPlaylist.count == song_playlist.Count)
+            {
+                song = song_playlist.ElementAt(index);
+                Artist artist = Artist.get(lib.artist_list, song.artist_id);
+                //MessageBox.Show("No se ha podido reproducir: " + song.name + " - " + artist.name, "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation); 
+                return;
+            }
+        }
+
+        private void MusicPlayer_EndOfStream(object sender, AxWMPLib._WMPOCXEvents_EndOfStreamEvent e)
+        {
+            lblSong_duration.Text = "00:00";
+        }
+
+        private void lblSong_album_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Artist artist = FindArtistByName(lblSong_Artist.Text);
+                Album album = new Album();
+                foreach (Album a in lib.album_list)
+                {
+                    if (a.name.ToLower() == lblSong_album.Text.ToLower() && a.artist_id == artist.id)
+                    {
+                        album = a;
+                    }
+
+                }
+                SelectAlbum(artist, album);
+            }
+            catch
+            {
+
+            }
+        }
+
+        private void lblSong_Artist_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Artist artist = FindArtistByName(lblSong_Artist.Text);
+                SelectArtist(artist);
+            }
+            catch { }
+        }
+
+        private void PANEL_Click(object sender, EventArgs e)
+        {
+            listAlbums.Items.Clear();
+            listSongs.Items.Clear();
+            listAlbums.SelectedIndex = -1;
+            listSongs.SelectedIndex = -1;
+            listArtists.SelectedIndex = -1;
+            foreach(int i in user.artist_list)
+            {
+                Artist artist = Artist.get(lib.artist_list, i);
+                foreach(Album album in lib.album_list)
+                {
+                    if(album.artist_id == artist.id)
+                    {
+                        ListBoxItem itemAlbum = new ListBoxItem();
+                        itemAlbum.Text = album.name;
+                        itemAlbum.Value = album;
+                        listAlbums.Items.Add(itemAlbum);
+                        foreach(Song song in lib.song_list)
+                        {
+                            if(song.album_id == album.id && song.artist_id == artist.id)
+                            {
+                                ListBoxItem itemSong = new ListBoxItem();
+                                itemSong.Text = song.name;
+                                itemSong.Value = song;
+                                listSongs.Items.Add(itemSong);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace ghMusicClient
+﻿namespace migh.player
 {
     partial class frmPlayer
     {
@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPlayer));
             this.listArtists = new System.Windows.Forms.ListBox();
             this.listAlbums = new System.Windows.Forms.ListBox();
@@ -48,25 +47,25 @@
             this.lblSong_Artist = new System.Windows.Forms.Label();
             this.lblSong_album = new System.Windows.Forms.Label();
             this.lblSong_duration = new System.Windows.Forms.Label();
-            this.Timer = new System.Windows.Forms.Timer(this.components);
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.Timer_Reset = new System.Windows.Forms.Timer(this.components);
             this.btnRepeat = new System.Windows.Forms.Button();
             this.btnShuffle = new System.Windows.Forms.Button();
             this.AlbumCover = new System.Windows.Forms.PictureBox();
-            this.MusicPlayer = new AxWMPLib.AxWindowsMediaPlayer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.lblLoading = new System.Windows.Forms.Label();
+            this.PANEL = new System.Windows.Forms.Panel();
+            this.MusicPlayer = new AxWMPLib.AxWindowsMediaPlayer();
             this.TopPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.AlbumCover)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.MusicPlayer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.MusicPlayer)).BeginInit();
             this.SuspendLayout();
             // 
             // listArtists
@@ -74,12 +73,12 @@
             this.listArtists.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
             this.listArtists.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.listArtists.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listArtists.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.listArtists.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
             this.listArtists.FormattingEnabled = true;
             this.listArtists.HorizontalScrollbar = true;
             this.listArtists.Location = new System.Drawing.Point(0, 0);
             this.listArtists.Name = "listArtists";
-            this.listArtists.Size = new System.Drawing.Size(151, 212);
+            this.listArtists.Size = new System.Drawing.Size(151, 264);
             this.listArtists.TabIndex = 2;
             this.listArtists.SelectedIndexChanged += new System.EventHandler(this.listArtists_SelectedIndexChanged);
             // 
@@ -88,12 +87,12 @@
             this.listAlbums.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
             this.listAlbums.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.listAlbums.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listAlbums.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.listAlbums.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
             this.listAlbums.FormattingEnabled = true;
             this.listAlbums.HorizontalScrollbar = true;
             this.listAlbums.Location = new System.Drawing.Point(0, 0);
             this.listAlbums.Name = "listAlbums";
-            this.listAlbums.Size = new System.Drawing.Size(252, 212);
+            this.listAlbums.Size = new System.Drawing.Size(268, 264);
             this.listAlbums.TabIndex = 3;
             this.listAlbums.SelectedIndexChanged += new System.EventHandler(this.listAlbums_SelectedIndexChanged);
             this.listAlbums.DoubleClick += new System.EventHandler(this.listAlbums_DoubleClick);
@@ -104,19 +103,19 @@
             this.listSongs.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
             this.listSongs.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.listSongs.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listSongs.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.listSongs.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
             this.listSongs.FormattingEnabled = true;
             this.listSongs.HorizontalScrollbar = true;
             this.listSongs.Location = new System.Drawing.Point(0, 0);
             this.listSongs.Name = "listSongs";
-            this.listSongs.Size = new System.Drawing.Size(435, 212);
+            this.listSongs.Size = new System.Drawing.Size(494, 264);
             this.listSongs.TabIndex = 4;
             this.listSongs.DoubleClick += new System.EventHandler(this.listSongs_DoubleClick);
-            this.listSongs.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listSongs_MouseDown);
+            this.listSongs.KeyDown += new System.Windows.Forms.KeyEventHandler(this.listSongs_KeyDown);
             // 
             // TopPanel
             // 
-            this.TopPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.TopPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(18)))), ((int)(((byte)(18)))));
             this.TopPanel.Controls.Add(this.btnSettings);
             this.TopPanel.Controls.Add(this.lblTitle);
             this.TopPanel.Controls.Add(this.label1);
@@ -127,7 +126,7 @@
             this.TopPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.TopPanel.Location = new System.Drawing.Point(0, 0);
             this.TopPanel.Name = "TopPanel";
-            this.TopPanel.Size = new System.Drawing.Size(870, 25);
+            this.TopPanel.Size = new System.Drawing.Size(943, 25);
             this.TopPanel.TabIndex = 21;
             this.TopPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TitleBarPanel_MouseDown);
             this.TopPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.TitleBarPanel_MouseMove);
@@ -141,8 +140,8 @@
             this.btnSettings.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.btnSettings.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btnSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSettings.Image = global::ghMusicClient.Properties.Resources.Settings;
-            this.btnSettings.Location = new System.Drawing.Point(759, 2);
+            this.btnSettings.Image = global::migh.player.Properties.Resources.Settings;
+            this.btnSettings.Location = new System.Drawing.Point(832, 2);
             this.btnSettings.Name = "btnSettings";
             this.btnSettings.Size = new System.Drawing.Size(20, 20);
             this.btnSettings.TabIndex = 31;
@@ -164,20 +163,19 @@
             this.lblTitle.Size = new System.Drawing.Size(68, 15);
             this.lblTitle.TabIndex = 102;
             this.lblTitle.Text = "Bienvenido";
-            this.lblTitle.Click += new System.EventHandler(this.lblTitle_Click);
+            this.lblTitle.UseMnemonic = false;
             this.lblTitle.DragDrop += new System.Windows.Forms.DragEventHandler(this.lblTitle_DragDrop);
             this.lblTitle.DragEnter += new System.Windows.Forms.DragEventHandler(this.lblTitle_DragEnter);
-            this.lblTitle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lblTitle_MouseDown);
-            this.lblTitle.MouseMove += new System.Windows.Forms.MouseEventHandler(this.lblTitle_MouseMove);
-            this.lblTitle.MouseUp += new System.Windows.Forms.MouseEventHandler(this.lblTitle_MouseUp);
+            this.lblTitle.DoubleClick += new System.EventHandler(this.lblTitle_DoubleClick);
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Enabled = false;
             this.label1.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.label1.Image = global::ghMusicClient.Properties.Resources.Search;
-            this.label1.Location = new System.Drawing.Point(511, 1);
+            this.label1.Image = global::migh.player.Properties.Resources.Search;
+            this.label1.Location = new System.Drawing.Point(611, 1);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(26, 21);
             this.label1.TabIndex = 32;
@@ -191,8 +189,8 @@
             this.Exitbtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.Exitbtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.Exitbtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Exitbtn.Image = global::ghMusicClient.Properties.Resources.close2;
-            this.Exitbtn.Location = new System.Drawing.Point(823, 3);
+            this.Exitbtn.Image = global::migh.player.Properties.Resources.close2;
+            this.Exitbtn.Location = new System.Drawing.Point(896, 3);
             this.Exitbtn.Name = "Exitbtn";
             this.Exitbtn.Size = new System.Drawing.Size(43, 18);
             this.Exitbtn.TabIndex = 101;
@@ -205,11 +203,12 @@
             // 
             // cbxSearch
             // 
+            this.cbxSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbxSearch.BackColor = System.Drawing.SystemColors.Menu;
             this.cbxSearch.DropDownHeight = 400;
             this.cbxSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbxSearch.IntegralHeight = false;
-            this.cbxSearch.Location = new System.Drawing.Point(317, 3);
+            this.cbxSearch.Location = new System.Drawing.Point(416, 3);
             this.cbxSearch.MaxDropDownItems = 15;
             this.cbxSearch.Name = "cbxSearch";
             this.cbxSearch.Size = new System.Drawing.Size(436, 21);
@@ -225,8 +224,8 @@
             this.Minbtn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.Minbtn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.Minbtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Minbtn.Image = global::ghMusicClient.Properties.Resources.min;
-            this.Minbtn.Location = new System.Drawing.Point(785, 3);
+            this.Minbtn.Image = global::migh.player.Properties.Resources.min;
+            this.Minbtn.Location = new System.Drawing.Point(858, 3);
             this.Minbtn.Name = "Minbtn";
             this.Minbtn.Size = new System.Drawing.Size(32, 18);
             this.Minbtn.TabIndex = 100;
@@ -239,10 +238,11 @@
             // 
             // txtSearch
             // 
-            this.txtSearch.BackColor = System.Drawing.SystemColors.Menu;
+            this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSearch.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.txtSearch.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtSearch.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.txtSearch.Location = new System.Drawing.Point(542, 6);
+            this.txtSearch.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.txtSearch.Location = new System.Drawing.Point(641, 6);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(211, 13);
             this.txtSearch.TabIndex = 31;
@@ -251,41 +251,45 @@
             // 
             // RightPanel
             // 
-            this.RightPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.RightPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(18)))), ((int)(((byte)(18)))));
             this.RightPanel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.RightPanel.Location = new System.Drawing.Point(866, 25);
+            this.RightPanel.Enabled = false;
+            this.RightPanel.Location = new System.Drawing.Point(939, 25);
             this.RightPanel.Name = "RightPanel";
-            this.RightPanel.Size = new System.Drawing.Size(4, 426);
+            this.RightPanel.Size = new System.Drawing.Size(4, 477);
             this.RightPanel.TabIndex = 22;
             // 
             // LeftPanel
             // 
-            this.LeftPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.LeftPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(18)))), ((int)(((byte)(18)))));
             this.LeftPanel.Dock = System.Windows.Forms.DockStyle.Left;
+            this.LeftPanel.Enabled = false;
             this.LeftPanel.Location = new System.Drawing.Point(0, 25);
             this.LeftPanel.Name = "LeftPanel";
-            this.LeftPanel.Size = new System.Drawing.Size(4, 426);
+            this.LeftPanel.Size = new System.Drawing.Size(4, 477);
             this.LeftPanel.TabIndex = 23;
             // 
             // BottomPanel
             // 
-            this.BottomPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(20)))), ((int)(((byte)(20)))), ((int)(((byte)(20)))));
+            this.BottomPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(18)))), ((int)(((byte)(18)))), ((int)(((byte)(18)))));
             this.BottomPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.BottomPanel.Location = new System.Drawing.Point(4, 447);
+            this.BottomPanel.Enabled = false;
+            this.BottomPanel.Location = new System.Drawing.Point(4, 498);
             this.BottomPanel.Name = "BottomPanel";
-            this.BottomPanel.Size = new System.Drawing.Size(862, 4);
+            this.BottomPanel.Size = new System.Drawing.Size(935, 4);
             this.BottomPanel.TabIndex = 24;
             // 
             // lblSong_Title
             // 
             this.lblSong_Title.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblSong_Title.AutoSize = true;
-            this.lblSong_Title.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.lblSong_Title.Location = new System.Drawing.Point(168, 293);
+            this.lblSong_Title.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.lblSong_Title.Location = new System.Drawing.Point(168, 346);
             this.lblSong_Title.Name = "lblSong_Title";
             this.lblSong_Title.Size = new System.Drawing.Size(35, 13);
             this.lblSong_Title.TabIndex = 25;
             this.lblSong_Title.Text = "Título";
+            this.lblSong_Title.UseMnemonic = false;
             this.lblSong_Title.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lblSong_Title_MouseDown);
             // 
             // lblSong_Artist
@@ -293,26 +297,28 @@
             this.lblSong_Artist.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblSong_Artist.AutoSize = true;
             this.lblSong_Artist.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblSong_Artist.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.lblSong_Artist.Location = new System.Drawing.Point(168, 317);
+            this.lblSong_Artist.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.lblSong_Artist.Location = new System.Drawing.Point(168, 370);
             this.lblSong_Artist.Name = "lblSong_Artist";
             this.lblSong_Artist.Size = new System.Drawing.Size(47, 15);
             this.lblSong_Artist.TabIndex = 26;
             this.lblSong_Artist.Text = "Artista";
-            this.lblSong_Artist.DoubleClick += new System.EventHandler(this.lblSong_Artist_DoubleClick);
+            this.lblSong_Artist.UseMnemonic = false;
+            this.lblSong_Artist.Click += new System.EventHandler(this.lblSong_Artist_Click);
             this.lblSong_Artist.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lblSong_Artist_MouseDown);
             // 
             // lblSong_album
             // 
             this.lblSong_album.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblSong_album.AutoSize = true;
-            this.lblSong_album.ForeColor = System.Drawing.SystemColors.ActiveCaption;
-            this.lblSong_album.Location = new System.Drawing.Point(168, 341);
+            this.lblSong_album.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.lblSong_album.Location = new System.Drawing.Point(168, 396);
             this.lblSong_album.Name = "lblSong_album";
             this.lblSong_album.Size = new System.Drawing.Size(36, 13);
             this.lblSong_album.TabIndex = 27;
             this.lblSong_album.Text = "Álbum";
-            this.lblSong_album.DoubleClick += new System.EventHandler(this.lblSong_album_DoubleClick);
+            this.lblSong_album.UseMnemonic = false;
+            this.lblSong_album.Click += new System.EventHandler(this.lblSong_album_Click);
             this.lblSong_album.MouseDown += new System.Windows.Forms.MouseEventHandler(this.lblSong_album_MouseDown);
             // 
             // lblSong_duration
@@ -320,41 +326,36 @@
             this.lblSong_duration.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblSong_duration.AutoSize = true;
             this.lblSong_duration.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.lblSong_duration.Location = new System.Drawing.Point(168, 386);
+            this.lblSong_duration.Location = new System.Drawing.Point(168, 438);
             this.lblSong_duration.Name = "lblSong_duration";
             this.lblSong_duration.Size = new System.Drawing.Size(50, 13);
             this.lblSong_duration.TabIndex = 28;
             this.lblSong_duration.Text = "Duración";
             this.lblSong_duration.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // Timer
-            // 
-            this.Timer.Enabled = true;
-            this.Timer.Interval = 50;
-            this.Timer.Tick += new System.EventHandler(this.Timer_Tick);
+            this.lblSong_duration.Visible = false;
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.listAlbums);
+            this.splitContainer1.Panel1.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.splitContainer1.Panel1MinSize = 235;
             // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.listSongs);
-            this.splitContainer1.Size = new System.Drawing.Size(691, 212);
-            this.splitContainer1.SplitterDistance = 252;
+            this.splitContainer1.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.splitContainer1.Panel2MinSize = 431;
+            this.splitContainer1.Size = new System.Drawing.Size(766, 264);
+            this.splitContainer1.SplitterDistance = 268;
             this.splitContainer1.TabIndex = 29;
-            // 
-            // Timer_Reset
-            // 
-            this.Timer_Reset.Enabled = true;
-            this.Timer_Reset.Interval = 30000;
-            this.Timer_Reset.Tick += new System.EventHandler(this.Timer_Reset_Tick);
             // 
             // btnRepeat
             // 
@@ -365,8 +366,8 @@
             this.btnRepeat.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.btnRepeat.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.btnRepeat.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRepeat.Image = global::ghMusicClient.Properties.Resources.Repeat_on;
-            this.btnRepeat.Location = new System.Drawing.Point(168, 249);
+            this.btnRepeat.Image = global::migh.player.Properties.Resources.Repeat_off;
+            this.btnRepeat.Location = new System.Drawing.Point(167, 301);
             this.btnRepeat.Name = "btnRepeat";
             this.btnRepeat.Size = new System.Drawing.Size(16, 16);
             this.btnRepeat.TabIndex = 30;
@@ -382,8 +383,8 @@
             this.btnShuffle.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.btnShuffle.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.btnShuffle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnShuffle.Image = ((System.Drawing.Image)(resources.GetObject("btnShuffle.Image")));
-            this.btnShuffle.Location = new System.Drawing.Point(199, 249);
+            this.btnShuffle.Image = global::migh.player.Properties.Resources.Shuffle_off;
+            this.btnShuffle.Location = new System.Drawing.Point(198, 301);
             this.btnShuffle.Name = "btnShuffle";
             this.btnShuffle.Size = new System.Drawing.Size(16, 16);
             this.btnShuffle.TabIndex = 5;
@@ -395,7 +396,7 @@
             this.AlbumCover.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.AlbumCover.ErrorImage = ((System.Drawing.Image)(resources.GetObject("AlbumCover.ErrorImage")));
             this.AlbumCover.InitialImage = ((System.Drawing.Image)(resources.GetObject("AlbumCover.InitialImage")));
-            this.AlbumCover.Location = new System.Drawing.Point(12, 249);
+            this.AlbumCover.Location = new System.Drawing.Point(12, 301);
             this.AlbumCover.Name = "AlbumCover";
             this.AlbumCover.Size = new System.Drawing.Size(150, 150);
             this.AlbumCover.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -403,35 +404,65 @@
             this.AlbumCover.TabStop = false;
             this.AlbumCover.DoubleClick += new System.EventHandler(this.AlbumCover_DoubleClick);
             // 
-            // MusicPlayer
-            // 
-            this.MusicPlayer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.MusicPlayer.Enabled = true;
-            this.MusicPlayer.Location = new System.Drawing.Point(1, 406);
-            this.MusicPlayer.Name = "MusicPlayer";
-            this.MusicPlayer.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("MusicPlayer.OcxState")));
-            this.MusicPlayer.Size = new System.Drawing.Size(870, 43);
-            this.MusicPlayer.TabIndex = 15;
-            this.MusicPlayer.TabStop = false;
-            this.MusicPlayer.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.MusicPlayer_PlayStateChange);
-            this.MusicPlayer.CurrentItemChange += new AxWMPLib._WMPOCXEvents_CurrentItemChangeEventHandler(this.MusicPlayer_CurrentItemChange);
-            // 
             // splitContainer2
             // 
+            this.splitContainer2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainer2.Location = new System.Drawing.Point(12, 31);
             this.splitContainer2.Name = "splitContainer2";
             // 
             // splitContainer2.Panel1
             // 
             this.splitContainer2.Panel1.Controls.Add(this.listArtists);
+            this.splitContainer2.Panel1MinSize = 150;
             // 
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.splitContainer1);
-            this.splitContainer2.Size = new System.Drawing.Size(846, 212);
+            this.splitContainer2.Size = new System.Drawing.Size(919, 264);
             this.splitContainer2.SplitterDistance = 151;
             this.splitContainer2.TabIndex = 33;
+            // 
+            // lblLoading
+            // 
+            this.lblLoading.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblLoading.AutoSize = true;
+            this.lblLoading.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.lblLoading.ForeColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.lblLoading.Location = new System.Drawing.Point(871, 466);
+            this.lblLoading.Name = "lblLoading";
+            this.lblLoading.Size = new System.Drawing.Size(62, 13);
+            this.lblLoading.TabIndex = 34;
+            this.lblLoading.Text = "Cargando...";
+            this.lblLoading.Visible = false;
+            // 
+            // PANEL
+            // 
+            this.PANEL.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.PANEL.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
+            this.PANEL.Location = new System.Drawing.Point(4, 31);
+            this.PANEL.Name = "PANEL";
+            this.PANEL.Size = new System.Drawing.Size(7, 264);
+            this.PANEL.TabIndex = 35;
+            this.PANEL.Click += new System.EventHandler(this.PANEL_Click);
+            // 
+            // MusicPlayer
+            // 
+            this.MusicPlayer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.MusicPlayer.Enabled = true;
+            this.MusicPlayer.Location = new System.Drawing.Point(3, 456);
+            this.MusicPlayer.Name = "MusicPlayer";
+            this.MusicPlayer.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("MusicPlayer.OcxState")));
+            this.MusicPlayer.Size = new System.Drawing.Size(940, 43);
+            this.MusicPlayer.TabIndex = 15;
+            this.MusicPlayer.TabStop = false;
+            this.MusicPlayer.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(this.MusicPlayer_PlayStateChange);
+            this.MusicPlayer.EndOfStream += new AxWMPLib._WMPOCXEvents_EndOfStreamEventHandler(this.MusicPlayer_EndOfStream);
+            this.MusicPlayer.CurrentItemChange += new AxWMPLib._WMPOCXEvents_CurrentItemChangeEventHandler(this.MusicPlayer_CurrentItemChange);
+            this.MusicPlayer.MediaError += new AxWMPLib._WMPOCXEvents_MediaErrorEventHandler(this.MusicPlayer_MediaError);
             // 
             // frmPlayer
             // 
@@ -439,7 +470,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(250)))), ((int)(((byte)(250)))), ((int)(((byte)(250)))));
-            this.ClientSize = new System.Drawing.Size(870, 451);
+            this.ClientSize = new System.Drawing.Size(943, 502);
+            this.Controls.Add(this.PANEL);
+            this.Controls.Add(this.lblLoading);
             this.Controls.Add(this.splitContainer2);
             this.Controls.Add(this.btnRepeat);
             this.Controls.Add(this.btnShuffle);
@@ -456,10 +489,11 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(847, 465);
             this.Name = "frmPlayer";
             this.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
+            this.Text = "migh.player";
             this.Load += new System.EventHandler(this.frmPlayer_Load);
             this.TopPanel.ResumeLayout(false);
             this.TopPanel.PerformLayout();
@@ -468,11 +502,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.AlbumCover)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.MusicPlayer)).EndInit();
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.MusicPlayer)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -495,9 +529,7 @@
         private System.Windows.Forms.Label lblSong_Artist;
         private System.Windows.Forms.Label lblSong_album;
         private System.Windows.Forms.Label lblSong_duration;
-        private System.Windows.Forms.Timer Timer;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private System.Windows.Forms.Timer Timer_Reset;
         private System.Windows.Forms.Button btnShuffle;
         private System.Windows.Forms.Button btnRepeat;
         private System.Windows.Forms.Button btnSettings;
@@ -506,6 +538,8 @@
         private System.Windows.Forms.ComboBox cbxSearch;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.Label lblLoading;
+        private System.Windows.Forms.Panel PANEL;
     }
 }
 
